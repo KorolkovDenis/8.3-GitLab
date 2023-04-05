@@ -48,7 +48,7 @@ sudo EXTERNAL_URL="http://gitlab.localdomain" apt-get install gitlab-ce
 ```
 Итог получаем:
 
-![screen1](https://github.com/KorolkovDenis/)
+![screen1](https://github.com/KorolkovDenis/8.3-GitLab/blob/main/Screenshots/task1/screen1.jpg)
 
 На заметку, для первого входа в наш локальный GitLab создается аккаунт админа по умолчанию:
 ```
@@ -69,8 +69,8 @@ docker pull docker:latest
 
 Перехожу к запуску установленного GitLab (IP моего хоста - 192.168.1.221):
 
-![screen2](https://github.com/KorolkovDenis/)
-![screen3](https://github.com/KorolkovDenis/)
+![screen2](https://github.com/KorolkovDenis/8.3-GitLab/blob/main/Screenshots/task1/screen2.jpg)
+![screen3](https://github.com/KorolkovDenis/8.3-GitLab/blob/main/Screenshots/task1/screen3.jpg)
 
 После входа на вебку GitLab советую поменять пароль на свой, дабы ранее было такое предупреждение:
 
@@ -79,19 +79,19 @@ Password stored to /etc/gitlab/initial_root_password. This file will be cleaned 
 Создаю новый проект и пустой репозиторий в нём. Проект и будет нашим репозиторием.
 Выбираем в меню Projects - New project - Create blank project
 
-![screen4](https://github.com/KorolkovDenis/)
-![screen5](https://github.com/KorolkovDenis/)
+![screen4](https://github.com/KorolkovDenis/8.3-GitLab/blob/main/Screenshots/task1/screen4.jpg)
+![screen5](https://github.com/KorolkovDenis/8.3-GitLab/blob/main/Screenshots/task1/screen5.jpg)
 
 Даем название нашему репозиторию (проекту) – «my_first_project_gitlab», делаю его публичным и убираю галочку с создания файла README, чтобы репозиторий оставался чистым, без комитов.
 
-![screen6](https://github.com/KorolkovDenis/)
-![screen7](https://github.com/KorolkovDenis/)
+![screen6](https://github.com/KorolkovDenis/8.3-GitLab/blob/main/Screenshots/task1/screen6.jpg)
+![screen7](https://github.com/KorolkovDenis/8.3-GitLab/blob/main/Screenshots/task1/screen7.jpg)
 
 Регистрируем gitlab-runner для этого проекта и запускаем его в режиме Docker
 
 Раннеры можно увидеть в Settings - CI/CD - Runners
 
-![screen8](https://github.com/KorolkovDenis/)
+![screen8](https://github.com/KorolkovDenis/8.3-GitLab/blob/main/Screenshots/task1/screen8.jpg)
 
 Здесь из полезного: ссылка на наш проект (куда подключаться http://192.168.1.221/) и токен: GR1348941-tUzvQz_85itmMCz61m8
 
@@ -105,7 +105,7 @@ docker run -ti --rm --name gitlab-runner \
      gitlab/gitlab-runner:latest register
 ```
 
-![screen9](https://github.com/KorolkovDenis/)
+![screen9](https://github.com/KorolkovDenis/8.3-GitLab/blob/main/Screenshots/task1/screen9.jpg)
 
 ```
 nano /srv/gitlab-runner/config/config.toml
@@ -122,12 +122,12 @@ docker run -d --name gitlab-runner --restart always \
      gitlab/gitlab-runner:latest
 
 ```
-![screen10](https://github.com/KorolkovDenis/)
-![screen11](https://github.com/KorolkovDenis/)
+![screen10](https://github.com/KorolkovDenis/8.3-GitLab/blob/main/Screenshots/task1/screen10.jpg)
+![screen11](https://github.com/KorolkovDenis/8.3-GitLab/blob/main/Screenshots/task1/screen11.jpg)
 
 Как итог теперь в GitLab отобразится наш запущенный раннер:
 
-![screen12](https://github.com/KorolkovDenis/)
+![screen12](https://github.com/KorolkovDenis/8.3-GitLab/blob/main/Screenshots/task1/screen12.jpg)
 
 
 ---
