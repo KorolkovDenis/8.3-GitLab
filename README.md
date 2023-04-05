@@ -31,9 +31,103 @@
 
 Последовательность выполнения работы.
 
+Открываем vagrantfile и последовательно выполняем следующие установки:
+
+```
+sudo apt update
+# install docker & docker-compose
+sudo apt install -y docker.io docker-compose
+# install gitlab: https://about.gitlab.com/install/#ubuntu
+sudo apt install -y curl openssh-server ca-certificates tzdata perl
+```
+
+Тут взял источник gitlab-ce вместо gitlab-ee. Причина: gitlab-ce - с открытым исходным кодом, установка прошла без дополнительных запросов о лицензии. С gitlab-ee с ходу не заладилось как-то ))
+```
+curl https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
+sudo EXTERNAL_URL="http://gitlab.localdomain" apt-get install gitlab-ce
+```
+Итог получаем:
+
 ![screen1](https://github.com/KorolkovDenis/)
 
+На заметку, для первого входа в наш локальный GitLab создается аккаунт админа по умолчанию:
+```
+Username: root
+Password: fn2yrFJ084+hB6RxTlBY/vgw/p7sJDjpk72z541q0nI=
+Пароль у всех конечно свой и лежит тут: /etc/gitlab/initial_root_password
+```
 
+Продолжаем добавлять необходимые компоненты из vagrantfile:
+
+```
+# pull some images in advance
+docker pull gitlab/gitlab-runner:latest
+docker pull sonarsource/sonar-scanner-cli:latest
+docker pull golang:1.17
+docker pull docker:latest
+```
+
+Перехожу к запуску установленного GitLab (IP моего хоста - 192.168.1.221):
+
+![screen2](https://github.com/KorolkovDenis/)
+![screen3](https://github.com/KorolkovDenis/)
+
+После входа на вебку GitLab советую поменять пароль на свой, дабы ранее было такое предупреждение:
+
+Password stored to /etc/gitlab/initial_root_password. This file will be cleaned up in first reconfigure run after 24 hours.
+
+Создаю новый проект и пустой репозиторий в нём. Проект и будет нашим репозиторием.
+Выбираем в меню Projects - New project - Create blank project
+
+![screen4](https://github.com/KorolkovDenis/)
+![screen5](https://github.com/KorolkovDenis/)
+
+Даем название нашему репозиторию (проекту) – «my_first_project_gitlab», делаю его публичным и убираю галочку с создания файла README, чтобы репозиторий оставался чистым, без комитов.
+
+![screen6](https://github.com/KorolkovDenis/)
+![screen7](https://github.com/KorolkovDenis/)
+
+Регистрируем gitlab-runner для этого проекта и запускаем его в режиме Docker
+
+Раннеры можно увидеть в Settings - CI/CD - Runners
+
+![screen8](https://github.com/KorolkovDenis/)
+
+Здесь из полезного: ссылка на наш проект (куда подключаться http://192.168.1.221/) и токен: GR1348941-tUzvQz_85itmMCz61m8
+
+Регистрируем наш раннер:
+
+```
+docker run -ti --rm --name gitlab-runner \
+     --network host \
+     -v /srv/gitlab-runner/config:/etc/gitlab-runner \
+     -v /var/run/docker.sock:/var/run/docker.sock \
+     gitlab/gitlab-runner:latest register
+```
+
+![screen9](https://github.com/KorolkovDenis/)
+
+```
+nano /srv/gitlab-runner/config/config.toml
+это то что у нас получилось – наша конфигурация
+Добавим в нее:
+volumes = ["/cache", "/var/run/docker.sock:/var/run/docker.sock"] – даем раннеру доступ к сокету докера
+
+Запускаем раннер:
+
+docker run -d --name gitlab-runner --restart always \
+     --network host \
+     -v /srv/gitlab-runner/config:/etc/gitlab-runner \
+     -v /var/run/docker.sock:/var/run/docker.sock \
+     gitlab/gitlab-runner:latest
+
+```
+![screen10](https://github.com/KorolkovDenis/)
+![screen11](https://github.com/KorolkovDenis/)
+
+Как итог теперь в GitLab отобразится наш запущенный раннер:
+
+![screen12](https://github.com/KorolkovDenis/)
 
 
 ---
@@ -54,7 +148,10 @@
 
 Последовательность выполнения работы.
 
-
+![screen1](https://github.com/KorolkovDenis/)
+![screen1](https://github.com/KorolkovDenis/)
+![screen1](https://github.com/KorolkovDenis/)
+![screen1](https://github.com/KorolkovDenis/)
 
  
  
