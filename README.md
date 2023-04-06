@@ -148,10 +148,52 @@ docker run -d --name gitlab-runner --restart always \
 
 Последовательность выполнения работы.
 
+Создаю каталог projects и в него копирую репозиторий с готовыми go-шными приложениями
+
+``` 
+mkdir projects
+cd ./projects
+git clone https://github.com/KorolkovDenis/sdvps-materials.git
+cd ./sdvps-materials
+git remote -v
+```
 ![screen1](https://github.com/KorolkovDenis/)
-![screen1](https://github.com/KorolkovDenis/)
-![screen1](https://github.com/KorolkovDenis/)
-![screen1](https://github.com/KorolkovDenis/)
+
+Чтобы репозиторий отправить на наш GitLab, мы соответственно должны исправить ссылки на наш репозиторий
+
+```
+git remote remove origin
+git remote add my_first_project_gitlab http://gitlab.localdomain/gitlab-instance-23fc6e51/my_first_project_gitlab.git
+```
+![screen2](https://github.com/KorolkovDenis/)
+
+Теперь по командам git push, git pull – будет взаимосвязаны с нашим репозиторием my_first_project_gitlab на GitLab.
+Создадим файл .gitlab-ci.yml, описав в нём все необходимые, на ваш взгляд, этапы (берем с примера pipeline)
+```
+sudo nano .gitlab-ci.yml
+```
+![screen3](https://github.com/KorolkovDenis/)
+
+Далее работаем с git:
+```
+git status
+git add .gitlab-ci.yml
+git commit -m "add .gitlab-ci.yml"
+git push --set-upstream my_first_project_gitlab main
+```
+![screen4](https://github.com/KorolkovDenis/)
+
+Как итог в Gitlab получил созданный репозиторий с успешно выполненным pipeline, взятый с файла ".gitlab-ci.yml"
+
+![screen5](https://github.com/KorolkovDenis/)
+![screen6](https://github.com/KorolkovDenis/)
+![screen7](https://github.com/KorolkovDenis/)
+![screen8](https://github.com/KorolkovDenis/)
+![screen9](https://github.com/KorolkovDenis/)
+
+При выполнении шага build, зацепил созданный контейнер
+
+![screen10](https://github.com/KorolkovDenis/)
 
  
  
@@ -171,9 +213,8 @@ docker run -d --name gitlab-runner --restart always \
 
 В качестве ответа добавьте в шаблон с решением файл gitlab-ci.yml своего проекта или вставьте код в соответсвующее поле в шаблоне.
 
-![screen1](https://github.com/KorolkovDenis/)
 
 
- ## Моя работа в Google:
+ ## Моя работа (есть заметки как обойти некоторые ошибки) в Google:
 
 [Моя работа по GitLab](https://docs.google.com/)
